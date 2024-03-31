@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Mobile</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <!-- User information will be dynamically inserted here -->
+        </tbody>
+    </table>
+    <script>
+        fetch('/data')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(users => {
+                console.log(users); // Log the retrieved users data
+
+                // Process retrieved data and append to the page
+                const userTableBody = document.getElementById('userTableBody'); // Clear previous data
+                userTableBody.innerHTML = "";
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+        <td>${user.username}</td>
+        <td>${user.email}</td>
+        <td>${user.address}</td>
+        <td>${user.mobile}</td>
+      `;
+                    userTableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.log(error));
+
+    </script>
+</body>
+
+</html>
